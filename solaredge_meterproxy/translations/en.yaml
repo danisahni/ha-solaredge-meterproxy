@@ -1,0 +1,4 @@
+configuration:
+  log_level:
+    name: Log level
+    description: "debug shows every Modbus request of the inverter. Meters are set up in Home Assistant: Settings > Devices & services > SolarEdge MeterProxy."

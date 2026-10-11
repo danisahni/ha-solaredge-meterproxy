@@ -1,0 +1,22 @@
+name: SolarEdge MeterProxy
+version: "0.1.0"
+slug: solaredge_meterproxy
+description: Third-party PV inverters as revenue meters for SolarEdge (WattNode emulation over RS485)
+url: https://github.com/danisahni/ha-solaredge-meterproxy
+arch:
+  - aarch64
+  - amd64
+startup: services
+boot: auto
+init: false
+uart: true
+homeassistant_api: true
+discovery:
+  - solaredge_meterproxy
+services:
+  - mqtt:want
+watchdog: http://[HOST]:[PORT:8099]/api/health
+options:
+  log_level: info
+schema:
+  log_level: list(debug|info|warning|error)

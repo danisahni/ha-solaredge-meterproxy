@@ -1,0 +1,12 @@
+{
+  "domain": "solaredge_meterproxy",
+  "name": "SolarEdge MeterProxy",
+  "codeowners": ["@danisahni"],
+  "config_flow": true,
+  "documentation": "https://github.com/danisahni/ha-solaredge-meterproxy",
+  "integration_type": "hub",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/danisahni/ha-solaredge-meterproxy/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

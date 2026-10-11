@@ -1,0 +1,246 @@
+{
+  "config": {
+    "flow_title": "{name}",
+    "step": {
+      "user": {
+        "title": "Mit der MeterProxy-App verbinden",
+        "description": "Normalerweise findet Home Assistant die App von selbst (Einstellungen > Geräte & Dienste > Entdeckt). Für die manuelle Einrichtung steht der Token im Protokoll der App.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "token": "Token"
+        },
+        "data_description": {
+          "host": "Hostname der App, z. B. local-solaredge-meterproxy"
+        }
+      },
+      "hassio_confirm": {
+        "title": "SolarEdge MeterProxy",
+        "description": "Home Assistant mit der App **{addon}** verbinden? Danach richtest du die Zähler über **Zähler hinzufügen** ein."
+      },
+      "reauth_confirm": {
+        "title": "Neuer Token",
+        "description": "Die App hat den Token abgelehnt. Kopiere den aktuellen Token aus dem Protokoll der App.",
+        "data": {
+          "token": "Token"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Die App ist nicht erreichbar. Ist sie installiert und gestartet?",
+      "invalid_auth": "Falscher Token"
+    },
+    "abort": {
+      "already_configured": "Diese App ist bereits eingerichtet",
+      "reauth_successful": "Token aktualisiert"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Ausfallverhalten",
+        "data": {
+          "stale_timeout": "Timeout Datenquelle",
+          "poll_timeout": "Timeout Wechselrichter-Abfrage",
+          "update_interval": "Leseintervall"
+        },
+        "data_description": {
+          "stale_timeout": "Liefert eine Quelle so lange keine neuen Werte, wird sie mit 0 W gemeldet.",
+          "poll_timeout": "Fragt der Wechselrichter die Zähler eines Ports so lange nicht ab, startet die App neu (höchstens 3-mal hintereinander). 0 = aus.",
+          "update_interval": "Wie oft die Sensoren der Quellen gelesen werden."
+        }
+      }
+    }
+  },
+  "config_subentries": {
+    "meter": {
+      "initiate_flow": {
+        "user": "Zähler hinzufügen"
+      },
+      "entry_type": "Zähler",
+      "step": {
+        "meter": {
+          "title": "Zähler für SolarEdge",
+          "description": "Jeder Zähler erscheint dem SolarEdge-Wechselrichter als eigener Zähler mit eigener Geräte-ID. Am Wechselrichter (SetApp oder http://172.16.0.1) trägst du genau diese Werte ein (siehe Dokumentation).",
+          "data": {
+            "name": "Name",
+            "serial_port": "RS485-Adapter",
+            "address": "Geräte-ID (Modbus-Adresse)"
+          },
+          "data_description": {
+            "name": "z. B. Balkonkraftwerk",
+            "serial_port": "USB-RS485-Adapter, der am RS485-Port des Wechselrichters hängt. Mehrere Zähler können sich einen Adapter teilen.",
+            "address": "Muss auf dem RS485-Bus eindeutig sein (Netzzähler, Batterie usw. haben andere IDs) und der am Wechselrichter eingestellten Geräte-ID entsprechen."
+          },
+          "sections": {
+            "advanced": {
+              "name": "Schnittstellen- und Zählereinstellungen",
+              "description": "Die Vorgaben passen zu den Standardwerten des Wechselrichters.",
+              "data": {
+                "baudrate": "Baudrate",
+                "parity": "Parität",
+                "ct_current": "CT-Nennstrom",
+                "serial_number": "Seriennummer"
+              },
+              "data_description": {
+                "ct_current": "Gleicher Wert wie am Wechselrichter.",
+                "serial_number": "Wird dem Wechselrichter gemeldet; beliebige, pro Zähler eindeutige Zahl."
+              }
+            }
+          }
+        },
+        "sources": {
+          "title": "Quellen von {name}",
+          "description": "Alle Quellen dieses Zählers werden addiert.\n\n{sources}",
+          "menu_options": {
+            "add_device": "Gerät hinzufügen (empfohlen)",
+            "add_entities": "Sensoren manuell hinzufügen",
+            "add_mqtt": "MQTT-Topic hinzufügen",
+            "edit_source": "Quelle bearbeiten",
+            "remove_source": "Quelle entfernen",
+            "finish": "Zähler speichern"
+          }
+        },
+        "add_device": {
+          "title": "Wechselrichter auswählen",
+          "description": "Jedes Gerät mit Leistungssensor: Wechselrichter, Mikrowechselrichter, Zwischenstecker an einem Balkonkraftwerk, … Die passenden Sensoren werden auf der nächsten Seite vorausgefüllt.",
+          "data": {
+            "device": "Gerät"
+          }
+        },
+        "source": {
+          "title": "Sensoren von {name}",
+          "description": "Pflicht ist nur die AC-Leistung. Ohne Zählerstand-Sensor wird die Energie aus der Leistung berechnet. DC-/String-Werte und Tageszähler sind ungeeignet.",
+          "data": {
+            "name": "Name",
+            "phase": "Phase",
+            "power": "AC-Leistung",
+            "energy": "Gesamtenergie (Zählerstand)",
+            "voltage": "Spannung",
+            "current": "Strom",
+            "frequency": "Frequenz",
+            "power_factor": "Leistungsfaktor",
+            "reactive_power": "Blindleistung",
+            "invert_power": "Erzeugung wird negativ gemeldet"
+          },
+          "data_description": {
+            "phase": "Phase, in die der Wechselrichter einspeist. Dreiphasige Wechselrichter: 3P.",
+            "power": "Pflicht (bei 3P alternativ die drei Phasenleistungen unten).",
+            "energy": "Optional, stetig steigender Gesamtzähler (kein Tageswert)."
+          },
+          "sections": {
+            "three_phase": {
+              "name": "Werte je Phase (nur bei 3P)",
+              "description": "Fehlende Phasenwerte werden aus den Gesamtwerten abgeleitet.",
+              "data": {
+                "l1_power": "L1 Leistung",
+                "l1_voltage": "L1 Spannung",
+                "l1_current": "L1 Strom",
+                "l1_energy": "L1 Energie",
+                "l2_power": "L2 Leistung",
+                "l2_voltage": "L2 Spannung",
+                "l2_current": "L2 Strom",
+                "l2_energy": "L2 Energie",
+                "l3_power": "L3 Leistung",
+                "l3_voltage": "L3 Spannung",
+                "l3_current": "L3 Strom",
+                "l3_energy": "L3 Energie"
+              }
+            }
+          }
+        },
+        "mqtt": {
+          "title": "MQTT-Quelle",
+          "description": "JSON-Payload mit den Schlüsseln `power_active` (W) und optional `energy_active` (kWh), `voltage_ln`, `frequency` … – siehe Dokumentation. Es wird der Broker der Mosquitto-App verwendet.",
+          "data": {
+            "name": "Name",
+            "topic": "Topic",
+            "phase": "Phase",
+            "invert_power": "Erzeugung wird negativ gemeldet"
+          }
+        },
+        "edit_source": {
+          "title": "Quelle bearbeiten",
+          "data": {
+            "source": "Quelle"
+          }
+        },
+        "remove_source": {
+          "title": "Quelle entfernen",
+          "data": {
+            "source": "Quelle"
+          }
+        }
+      },
+      "error": {
+        "address_in_use": "Diese Geräte-ID wird auf diesem Adapter schon von {other} verwendet",
+        "port_params": "Alle Zähler an einem Adapter brauchen dieselbe Baudrate und Parität (siehe {other})",
+        "power_required": "Bitte den Sensor für die AC-Leistung auswählen",
+        "power_required_3p": "Bitte den Sensor für die AC-Leistung oder alle drei Phasenleistungen auswählen",
+        "invalid_topic": "Topic ohne Platzhalter (+, #) angeben"
+      },
+      "abort": {
+        "reconfigure_successful": "Zähler gespeichert"
+      }
+    }
+  },
+  "selector": {
+    "phase": {
+      "options": {
+        "L1": "L1",
+        "L2": "L2",
+        "L3": "L3",
+        "3P": "3P (dreiphasig)"
+      }
+    },
+    "parity": {
+      "options": {
+        "N": "Keine (N)",
+        "E": "Gerade (E)",
+        "O": "Ungerade (O)"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "status": {
+        "name": "Status",
+        "state": {
+          "ok": "OK",
+          "partial": "Teilweise ohne Daten",
+          "source_unavailable": "Quelle nicht verfügbar",
+          "no_poll": "Keine Abfrage durch Wechselrichter"
+        }
+      },
+      "power": {
+        "name": "Gemeldete Leistung"
+      },
+      "energy": {
+        "name": "Gemeldete Energie"
+      },
+      "last_poll": {
+        "name": "Letzte Abfrage"
+      },
+      "polls": {
+        "name": "Abfragen"
+      },
+      "source_power": {
+        "name": "Leistung"
+      },
+      "source_energy": {
+        "name": "Energie"
+      },
+      "source_data_age": {
+        "name": "Datenalter"
+      }
+    },
+    "binary_sensor": {
+      "polled": {
+        "name": "Abfrage durch Wechselrichter"
+      },
+      "source_fresh": {
+        "name": "Aktuelle Daten"
+      }
+    }
+  }
+}

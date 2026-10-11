@@ -1,0 +1,135 @@
+[
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_ac_leistung",
+  "name": "AC-Leistung",
+  "device_class": "power",
+  "state_class": "measurement",
+  "unit": "W"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_ac_blindleistung",
+  "name": "AC-Blindleistung",
+  "device_class": "reactive_power",
+  "state_class": "measurement",
+  "unit": "var"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_netzspannung",
+  "name": "Netzspannung",
+  "device_class": "voltage",
+  "state_class": "measurement",
+  "unit": "V"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_ac_strom",
+  "name": "AC-Strom",
+  "device_class": "current",
+  "state_class": "measurement",
+  "unit": "A"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_netzfrequenz",
+  "name": "Netzfrequenz",
+  "device_class": "frequency",
+  "state_class": "measurement",
+  "unit": "Hz"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_leistungsfaktor",
+  "name": "Leistungsfaktor",
+  "device_class": "power_factor",
+  "state_class": "measurement",
+  "unit": "%"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_wechselrichter_temperatur",
+  "name": "Wechselrichter-Temperatur",
+  "device_class": "temperature",
+  "state_class": "measurement",
+  "unit": "°C"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_port_1_dc_spannung",
+  "name": "Port 1 DC-Spannung",
+  "device_class": "voltage",
+  "state_class": "measurement",
+  "unit": "V"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_port_2_dc_spannung",
+  "name": "Port 2 DC-Spannung",
+  "device_class": "voltage",
+  "state_class": "measurement",
+  "unit": "V"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_port_1_dc_strom",
+  "name": "Port 1 DC-Strom",
+  "device_class": "current",
+  "state_class": "measurement",
+  "unit": "A"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_port_2_dc_strom",
+  "name": "Port 2 DC-Strom",
+  "device_class": "current",
+  "state_class": "measurement",
+  "unit": "A"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_port_1_dc_leistung",
+  "name": "Port 1 DC-Leistung",
+  "device_class": "power",
+  "state_class": "measurement",
+  "unit": "W"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_port_2_dc_leistung",
+  "name": "Port 2 DC-Leistung",
+  "device_class": "power",
+  "state_class": "measurement",
+  "unit": "W"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_port_1_gesamtertrag",
+  "name": "Port 1 Gesamtertrag",
+  "device_class": "energy",
+  "state_class": "total_increasing",
+  "unit": "Wh"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_port_2_gesamtertrag",
+  "name": "Port 2 Gesamtertrag",
+  "device_class": "energy",
+  "state_class": "total_increasing",
+  "unit": "Wh"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_port_1_tagesertrag",
+  "name": "Port 1 Tagesertrag",
+  "device_class": "energy",
+  "state_class": "total_increasing",
+  "unit": "Wh"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_port_2_tagesertrag",
+  "name": "Port 2 Tagesertrag",
+  "device_class": "energy",
+  "state_class": "total_increasing",
+  "unit": "Wh"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_ac_tagesertrag",
+  "name": "AC-Tagesertrag",
+  "device_class": "energy",
+  "state_class": "total_increasing",
+  "unit": "Wh"
+ },
+ {
+  "entity_id": "sensor.aussenbereich_hms_800_2wt_gesamtertrag",
+  "name": "Gesamtertrag",
+  "device_class": "energy",
+  "state_class": "total_increasing",
+  "unit": "Wh"
+ }
+]

@@ -1,0 +1,246 @@
+{
+  "config": {
+    "flow_title": "{name}",
+    "step": {
+      "user": {
+        "title": "Connect to the MeterProxy app",
+        "description": "Normally Home Assistant finds the app by itself (Settings > Devices & services > Discovered). For a manual setup the token is printed in the app log.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "token": "Token"
+        },
+        "data_description": {
+          "host": "Hostname of the app, e.g. local-solaredge-meterproxy"
+        }
+      },
+      "hassio_confirm": {
+        "title": "SolarEdge MeterProxy",
+        "description": "Connect Home Assistant to the app **{addon}**? Afterwards add your meters with **Add meter**."
+      },
+      "reauth_confirm": {
+        "title": "New token",
+        "description": "The app rejected the token. Copy the current token from the app log.",
+        "data": {
+          "token": "Token"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "The app is not reachable. Is it installed and running?",
+      "invalid_auth": "Wrong token"
+    },
+    "abort": {
+      "already_configured": "This app is already set up",
+      "reauth_successful": "Token updated"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Fail-safe behaviour",
+        "data": {
+          "stale_timeout": "Source timeout",
+          "poll_timeout": "Inverter poll timeout",
+          "update_interval": "Read interval"
+        },
+        "data_description": {
+          "stale_timeout": "A source that sends no new values for this long is reported with 0 W.",
+          "poll_timeout": "If the inverter stops reading the meters on a port for this long, the app restarts (at most 3 times in a row). 0 = off.",
+          "update_interval": "How often the source sensors are read."
+        }
+      }
+    }
+  },
+  "config_subentries": {
+    "meter": {
+      "initiate_flow": {
+        "user": "Add meter"
+      },
+      "entry_type": "Meter",
+      "step": {
+        "meter": {
+          "title": "Meter towards SolarEdge",
+          "description": "Each meter appears to the SolarEdge inverter as its own revenue meter with its own device ID. Set up exactly the same values on the inverter (SetApp or http://172.16.0.1) (see documentation).",
+          "data": {
+            "name": "Name",
+            "serial_port": "RS485 adapter",
+            "address": "Device ID (Modbus address)"
+          },
+          "data_description": {
+            "name": "e.g. Balcony PV",
+            "serial_port": "USB-RS485 adapter that is connected to the inverter's RS485 port. Several meters can share one adapter.",
+            "address": "Must be unique on the RS485 bus (the grid meter, battery etc. use other IDs) and match the device ID set on the inverter."
+          },
+          "sections": {
+            "advanced": {
+              "name": "Serial and meter settings",
+              "description": "The defaults match the inverter's defaults.",
+              "data": {
+                "baudrate": "Baud rate",
+                "parity": "Parity",
+                "ct_current": "CT rating",
+                "serial_number": "Serial number"
+              },
+              "data_description": {
+                "ct_current": "Same value as set on the inverter.",
+                "serial_number": "Reported to the inverter; any number, unique per meter."
+              }
+            }
+          }
+        },
+        "sources": {
+          "title": "Sources of {name}",
+          "description": "All sources of this meter are added up.\n\n{sources}",
+          "menu_options": {
+            "add_device": "Add device (recommended)",
+            "add_entities": "Add sensors manually",
+            "add_mqtt": "Add MQTT topic",
+            "edit_source": "Edit source",
+            "remove_source": "Remove source",
+            "finish": "Save meter"
+          }
+        },
+        "add_device": {
+          "title": "Choose inverter",
+          "description": "Any device with a power sensor: inverter, micro inverter, smart plug measuring a plug-in PV system, … The matching sensors are filled in on the next page.",
+          "data": {
+            "device": "Device"
+          }
+        },
+        "source": {
+          "title": "Sensors of {name}",
+          "description": "Only AC power is required. Without a lifetime energy sensor the energy is calculated from the power. DC/string values and daily counters are not suitable.",
+          "data": {
+            "name": "Name",
+            "phase": "Phase",
+            "power": "AC power",
+            "energy": "Lifetime energy",
+            "voltage": "Voltage",
+            "current": "Current",
+            "frequency": "Frequency",
+            "power_factor": "Power factor",
+            "reactive_power": "Reactive power",
+            "invert_power": "Production is reported as negative value"
+          },
+          "data_description": {
+            "phase": "Phase the inverter feeds into. Three-phase inverters: 3P.",
+            "power": "Required (with 3P alternatively the three phase powers below).",
+            "energy": "Optional, increasing lifetime counter (not a daily value)."
+          },
+          "sections": {
+            "three_phase": {
+              "name": "Per-phase values (3P only)",
+              "description": "Missing phase values are derived from the totals.",
+              "data": {
+                "l1_power": "L1 power",
+                "l1_voltage": "L1 voltage",
+                "l1_current": "L1 current",
+                "l1_energy": "L1 energy",
+                "l2_power": "L2 power",
+                "l2_voltage": "L2 voltage",
+                "l2_current": "L2 current",
+                "l2_energy": "L2 energy",
+                "l3_power": "L3 power",
+                "l3_voltage": "L3 voltage",
+                "l3_current": "L3 current",
+                "l3_energy": "L3 energy"
+              }
+            }
+          }
+        },
+        "mqtt": {
+          "title": "MQTT source",
+          "description": "JSON payload with the keys `power_active` (W) and optionally `energy_active` (kWh), `voltage_ln`, `frequency` … – see documentation. The broker of the Mosquitto app is used.",
+          "data": {
+            "name": "Name",
+            "topic": "Topic",
+            "phase": "Phase",
+            "invert_power": "Production is reported as negative value"
+          }
+        },
+        "edit_source": {
+          "title": "Edit source",
+          "data": {
+            "source": "Source"
+          }
+        },
+        "remove_source": {
+          "title": "Remove source",
+          "data": {
+            "source": "Source"
+          }
+        }
+      },
+      "error": {
+        "address_in_use": "This device ID is already used on this adapter by {other}",
+        "port_params": "All meters on one adapter need the same baud rate and parity (see {other})",
+        "power_required": "Please choose the AC power sensor",
+        "power_required_3p": "Please choose the AC power sensor or all three phase power sensors",
+        "invalid_topic": "Topic without wildcards (+, #) required"
+      },
+      "abort": {
+        "reconfigure_successful": "Meter saved"
+      }
+    }
+  },
+  "selector": {
+    "phase": {
+      "options": {
+        "L1": "L1",
+        "L2": "L2",
+        "L3": "L3",
+        "3P": "3P (three-phase)"
+      }
+    },
+    "parity": {
+      "options": {
+        "N": "None (N)",
+        "E": "Even (E)",
+        "O": "Odd (O)"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "status": {
+        "name": "Status",
+        "state": {
+          "ok": "OK",
+          "partial": "Partly without data",
+          "source_unavailable": "Source unavailable",
+          "no_poll": "Not polled by inverter"
+        }
+      },
+      "power": {
+        "name": "Reported power"
+      },
+      "energy": {
+        "name": "Reported energy"
+      },
+      "last_poll": {
+        "name": "Last inverter poll"
+      },
+      "polls": {
+        "name": "Polls"
+      },
+      "source_power": {
+        "name": "Power"
+      },
+      "source_energy": {
+        "name": "Energy"
+      },
+      "source_data_age": {
+        "name": "Data age"
+      }
+    },
+    "binary_sensor": {
+      "polled": {
+        "name": "Inverter polling"
+      },
+      "source_fresh": {
+        "name": "Current data"
+      }
+    }
+  }
+}

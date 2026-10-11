@@ -1,0 +1,7 @@
+# Runtime pins installed with pip (aiohttp comes from the Alpine package py3-aiohttp).
+# pymodbus 3.4.1 = the version this WattNode emulation was field-proven with on
+# SolarEdge inverters. 3.7+ changed the server/datastore API - upgrade only with tests.
+pymodbus==3.4.1
+pyserial==3.5
+pyserial-asyncio==0.6
+paho-mqtt==2.1.0

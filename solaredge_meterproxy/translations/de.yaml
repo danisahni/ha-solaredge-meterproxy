@@ -1,0 +1,4 @@
+configuration:
+  log_level:
+    name: Log-Level
+    description: "debug zeigt jede Modbus-Anfrage des Wechselrichters. Die Zähler werden in Home Assistant eingerichtet: Einstellungen > Geräte & Dienste > SolarEdge MeterProxy."

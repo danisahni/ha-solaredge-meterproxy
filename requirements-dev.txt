@@ -1,0 +1,8 @@
+-r solaredge_meterproxy/app/requirements.txt
+aiohttp>=3.9
+pyserial==3.5
+pytest>=8
+pytest-asyncio>=0.23
+ruff>=0.6
+amqtt>=0.11  # local MQTT broker for the MQTT tests (skipped if missing)
+pyyaml>=6
